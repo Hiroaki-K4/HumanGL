@@ -2,6 +2,11 @@
 This project is an introduction to hierarchical modeling and matrix stack manipulation.
 We use matrices in order to link different parts of a model and make them move together in a logical way.
 
+```bash
+export LD_LIBRARY_PATH=LD_LIBRARY_PATH:glfw/build/src
+export LIBGL_ALWAYS_INDIRECT=0
+```
+
 <br></br>
 
 ## Reference
