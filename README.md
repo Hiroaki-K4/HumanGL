@@ -11,3 +11,4 @@ export LIBGL_ALWAYS_INDIRECT=0
 
 ## Reference
 - [Lecture 20: Hierarchical Modelling](https://teaching.csse.uwa.edu.au/units/CITS3003/lectures/020_Hierarchical_Modelling.pdf)
+- [LearnOpenGL - Camera](https://learnopengl.com/Getting-started/Camera)
