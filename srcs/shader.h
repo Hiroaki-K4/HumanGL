@@ -8,6 +8,7 @@
 #include <sstream>
 #include <iostream>
 
+#define STB_IMAGE_IMPLEMENTATION
 
 class Shader {
     public:
