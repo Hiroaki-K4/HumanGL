@@ -70,6 +70,7 @@ glm::mat4 Human::get_torso_model_matrix() {
 }
 
 glm::mat4 Human::get_head_model_matrix() {
+    // TODO: Think about how to store model matrix
     return head.get_model_matrix();
 }
 

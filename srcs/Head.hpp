@@ -6,13 +6,16 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
+#include <vector>
 
 
 class Head {
     public:
         Head();
         ~Head();
-        glm::mat4 get_model_matrix();
+        glm::mat4 get_model_matrix(
+            std::vector<glm::mat4> trans_mat_stack,
+            std::vector<glm::mat4> rot_mat_stack);
         float width = 1.0f;
         float height = 1.0f;
         float depth = 1.0f;
