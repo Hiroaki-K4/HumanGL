@@ -117,6 +117,50 @@ int main() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
+    unsigned int right_upper_arm_VBO, right_upper_arm_VAO;
+    glGenVertexArrays(1, &right_upper_arm_VAO);
+    glGenBuffers(1, &right_upper_arm_VBO);
+    glBindVertexArray(right_upper_arm_VAO);
+    // Copy our vertices array in a buffer for OpenGL to use
+    glBindBuffer(GL_ARRAY_BUFFER, right_upper_arm_VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(human.get_right_upper_arm().vertices), human.get_right_upper_arm().vertices, GL_STATIC_DRAW);
+    // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    unsigned int left_upper_arm_VBO, left_upper_arm_VAO;
+    glGenVertexArrays(1, &left_upper_arm_VAO);
+    glGenBuffers(1, &left_upper_arm_VBO);
+    glBindVertexArray(left_upper_arm_VAO);
+    // Copy our vertices array in a buffer for OpenGL to use
+    glBindBuffer(GL_ARRAY_BUFFER, left_upper_arm_VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(human.get_left_upper_arm().vertices), human.get_left_upper_arm().vertices, GL_STATIC_DRAW);
+    // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    unsigned int right_fore_arm_VBO, right_fore_arm_VAO;
+    glGenVertexArrays(1, &right_fore_arm_VAO);
+    glGenBuffers(1, &right_fore_arm_VBO);
+    glBindVertexArray(right_fore_arm_VAO);
+    // Copy our vertices array in a buffer for OpenGL to use
+    glBindBuffer(GL_ARRAY_BUFFER, right_fore_arm_VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(human.get_right_fore_arm().vertices), human.get_right_fore_arm().vertices, GL_STATIC_DRAW);
+    // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    unsigned int left_fore_arm_VBO, left_fore_arm_VAO;
+    glGenVertexArrays(1, &left_fore_arm_VAO);
+    glGenBuffers(1, &left_fore_arm_VBO);
+    glBindVertexArray(left_fore_arm_VAO);
+    // Copy our vertices array in a buffer for OpenGL to use
+    glBindBuffer(GL_ARRAY_BUFFER, left_fore_arm_VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(human.get_left_fore_arm().vertices), human.get_left_fore_arm().vertices, GL_STATIC_DRAW);
+    // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
     ourShader.use();
 
     glEnable(GL_DEPTH_TEST);
@@ -165,6 +209,34 @@ int main() {
         glBindVertexArray(head_VAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
+        // Draw right upper arm
+        model = human.get_right_upper_arm_model_matrix();
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform4f(vertexColorLocation, 1.0f, 0.76f, 0.64f, 1.0f);
+        glBindVertexArray(right_upper_arm_VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        // Draw left upper arm
+        model = human.get_left_upper_arm_model_matrix();
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform4f(vertexColorLocation, 1.0f, 0.76f, 0.64f, 1.0f);
+        glBindVertexArray(left_upper_arm_VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        // Draw right fore arm
+        model = human.get_right_fore_arm_model_matrix();
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform4f(vertexColorLocation, 1.0f, 0.76f, 0.64f, 1.0f);
+        glBindVertexArray(right_fore_arm_VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        // Draw left fore arm
+        model = human.get_left_fore_arm_model_matrix();
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform4f(vertexColorLocation, 1.0f, 0.76f, 0.64f, 1.0f);
+        glBindVertexArray(left_fore_arm_VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
         // Swap buffers and poll IO events
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -173,8 +245,16 @@ int main() {
     // Optional: de-allocate all resources once they've outlived their purpose
     glDeleteVertexArrays(1, &torso_VAO);
     glDeleteVertexArrays(1, &head_VAO);
+    glDeleteVertexArrays(1, &right_upper_arm_VAO);
+    glDeleteVertexArrays(1, &left_upper_arm_VAO);
+    glDeleteVertexArrays(1, &right_fore_arm_VAO);
+    glDeleteVertexArrays(1, &left_fore_arm_VAO);
     glDeleteBuffers(1, &torso_VBO);
     glDeleteBuffers(1, &head_VBO);
+    glDeleteBuffers(1, &right_upper_arm_VBO);
+    glDeleteBuffers(1, &left_upper_arm_VBO);
+    glDeleteBuffers(1, &right_fore_arm_VBO);
+    glDeleteBuffers(1, &left_fore_arm_VBO);
 
     glfwTerminate();
 
