@@ -48,51 +48,6 @@ int main() {
     // Build and compile our shader program
     Shader ourShader("texture.vs", "texture.fs");
 
-    float vertices[] = {
-        // positions
-        -0.5f, -0.5f, -0.5f,
-        0.5f, -0.5f, -0.5f,
-        0.5f, 0.5f, -0.5f,
-        0.5f, 0.5f, -0.5f,
-        -0.5f, 0.5f, -0.5f,
-        -0.5f, -0.5f, -0.5f,
-
-        -0.5f, -0.5f, 0.5f,
-        0.5f, -0.5f, 0.5f,
-        0.5f, 0.5f, 0.5f,
-        0.5f, 0.5f, 0.5f,
-        -0.5f, 0.5f, 0.5f,
-        -0.5f, -0.5f, 0.5f,
-
-        -0.5f, 0.5f, 0.5f,
-        -0.5f, 0.5f, -0.5f,
-        -0.5f, -0.5f, -0.5f,
-        -0.5f, -0.5f, -0.5f,
-        -0.5f, -0.5f, 0.5f,
-        -0.5f, 0.5f, 0.5f,
-
-        0.5f, 0.5f, 0.5f,
-        0.5f, 0.5f, -0.5f,
-        0.5f, -0.5f, -0.5f,
-        0.5f, -0.5f, -0.5f,
-        0.5f, -0.5f, 0.5f,
-        0.5f, 0.5f, 0.5f,
-
-        -0.5f, -0.5f, -0.5f,
-        0.5f, -0.5f, -0.5f,
-        0.5f, -0.5f, 0.5f,
-        0.5f, -0.5f, 0.5f,
-        -0.5f, -0.5f, 0.5f,
-        -0.5f, -0.5f, -0.5f,
-
-        -0.5f, 0.5f, -0.5f,
-        0.5f, 0.5f, -0.5f,
-        0.5f, 0.5f, 0.5f,
-        0.5f, 0.5f, 0.5f,
-        -0.5f, 0.5f, 0.5f,
-        -0.5f, 0.5f, -0.5f,
-    };
-
     Human human;
 
     unsigned int torso_VBO, torso_VAO;
@@ -157,6 +112,50 @@ int main() {
     // Copy our vertices array in a buffer for OpenGL to use
     glBindBuffer(GL_ARRAY_BUFFER, left_fore_arm_VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(human.get_left_fore_arm().vertices), human.get_left_fore_arm().vertices, GL_STATIC_DRAW);
+    // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    unsigned int right_upper_leg_VBO, right_upper_leg_VAO;
+    glGenVertexArrays(1, &right_upper_leg_VAO);
+    glGenBuffers(1, &right_upper_leg_VBO);
+    glBindVertexArray(right_upper_leg_VAO);
+    // Copy our vertices array in a buffer for OpenGL to use
+    glBindBuffer(GL_ARRAY_BUFFER, right_upper_leg_VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(human.get_right_upper_leg().vertices), human.get_right_upper_leg().vertices, GL_STATIC_DRAW);
+    // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    unsigned int left_upper_leg_VBO, left_upper_leg_VAO;
+    glGenVertexArrays(1, &left_upper_leg_VAO);
+    glGenBuffers(1, &left_upper_leg_VBO);
+    glBindVertexArray(left_upper_leg_VAO);
+    // Copy our vertices array in a buffer for OpenGL to use
+    glBindBuffer(GL_ARRAY_BUFFER, left_upper_leg_VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(human.get_left_upper_leg().vertices), human.get_left_upper_leg().vertices, GL_STATIC_DRAW);
+    // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    unsigned int right_lower_leg_VBO, right_lower_leg_VAO;
+    glGenVertexArrays(1, &right_lower_leg_VAO);
+    glGenBuffers(1, &right_lower_leg_VBO);
+    glBindVertexArray(right_lower_leg_VAO);
+    // Copy our vertices array in a buffer for OpenGL to use
+    glBindBuffer(GL_ARRAY_BUFFER, right_lower_leg_VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(human.get_right_lower_leg().vertices), human.get_right_lower_leg().vertices, GL_STATIC_DRAW);
+    // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    unsigned int left_lower_leg_VBO, left_lower_leg_VAO;
+    glGenVertexArrays(1, &left_lower_leg_VAO);
+    glGenBuffers(1, &left_lower_leg_VBO);
+    glBindVertexArray(left_lower_leg_VAO);
+    // Copy our vertices array in a buffer for OpenGL to use
+    glBindBuffer(GL_ARRAY_BUFFER, left_lower_leg_VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(human.get_left_lower_leg().vertices), human.get_left_lower_leg().vertices, GL_STATIC_DRAW);
     // Position attribute
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
@@ -237,6 +236,34 @@ int main() {
         glBindVertexArray(left_fore_arm_VAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
+        // Draw right upper leg
+        model = human.get_right_upper_leg_model_matrix();
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform4f(vertexColorLocation, 0.03f, 0.37f, 0.65f, 1.0f);
+        glBindVertexArray(right_upper_leg_VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        // Draw left upper leg
+        model = human.get_left_upper_leg_model_matrix();
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform4f(vertexColorLocation, 0.03f, 0.37f, 0.65f, 1.0f);
+        glBindVertexArray(left_upper_leg_VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        // Draw right lower leg
+        model = human.get_right_lower_leg_model_matrix();
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform4f(vertexColorLocation, 0.03f, 0.37f, 0.65f, 1.0f);
+        glBindVertexArray(right_lower_leg_VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        // Draw left lower leg
+        model = human.get_left_lower_leg_model_matrix();
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform4f(vertexColorLocation, 0.03f, 0.37f, 0.65f, 1.0f);
+        glBindVertexArray(left_lower_leg_VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
         // Swap buffers and poll IO events
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -249,12 +276,20 @@ int main() {
     glDeleteVertexArrays(1, &left_upper_arm_VAO);
     glDeleteVertexArrays(1, &right_fore_arm_VAO);
     glDeleteVertexArrays(1, &left_fore_arm_VAO);
+    glDeleteVertexArrays(1, &right_upper_leg_VAO);
+    glDeleteVertexArrays(1, &left_upper_leg_VAO);
+    glDeleteVertexArrays(1, &right_lower_leg_VAO);
+    glDeleteVertexArrays(1, &left_lower_leg_VAO);
     glDeleteBuffers(1, &torso_VBO);
     glDeleteBuffers(1, &head_VBO);
     glDeleteBuffers(1, &right_upper_arm_VBO);
     glDeleteBuffers(1, &left_upper_arm_VBO);
     glDeleteBuffers(1, &right_fore_arm_VBO);
     glDeleteBuffers(1, &left_fore_arm_VBO);
+    glDeleteBuffers(1, &right_upper_leg_VBO);
+    glDeleteBuffers(1, &left_upper_leg_VBO);
+    glDeleteBuffers(1, &right_lower_leg_VBO);
+    glDeleteBuffers(1, &left_lower_leg_VBO);
 
     glfwTerminate();
 
