@@ -7,9 +7,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "shader.h"
-
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+#include "Human.hpp"
 
 
 void processInput(GLFWwindow *window) {
@@ -50,124 +48,119 @@ int main() {
     // Build and compile our shader program
     Shader ourShader("texture.vs", "texture.fs");
 
-    float vertices[] = {
-        // positions          // colors          // texture coords
-        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
-        0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
-        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
+    Human human;
 
-        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-        0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
-        0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
-        0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
-        -0.5f, 0.5f, 0.5f, 0.0f, 1.0f,
-        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-
-        -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-        -0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-        -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-
-        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-        0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-        0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-        0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-
-        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-        0.5f, -0.5f, -0.5f, 1.0f, 1.0f,
-        0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
-        0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
-        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-
-        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
-        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-        -0.5f, 0.5f, 0.5f, 0.0f, 0.0f,
-        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f
-    };
-    unsigned int indices[] = {
-        0, 1, 3, // first triangle
-        1, 2, 3  // second triangle
-    };
-    glm::vec3 headPosition = glm::vec3( 0.0f, 2.0f, 0.0f);
-    // Setup VAO
-    unsigned int VBO, VAO, EBO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
-    // Bind vertex array object
-    glBindVertexArray(VAO);
-
+    unsigned int torso_VBO, torso_VAO;
+    glGenVertexArrays(1, &torso_VAO);
+    glGenBuffers(1, &torso_VBO);
+    glBindVertexArray(torso_VAO);
     // Copy our vertices array in a buffer for OpenGL to use
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
+    glBindBuffer(GL_ARRAY_BUFFER, torso_VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(human.get_torso().vertices), human.get_torso().vertices, GL_STATIC_DRAW);
     // Position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-    // Texture attribute
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
 
-    // Create texture
-    unsigned int texture1, texture2;
-    // texture 1
-    glGenTextures(1, &texture1);
-    glBindTexture(GL_TEXTURE_2D, texture1);
+    unsigned int head_VBO, head_VAO;
+    glGenVertexArrays(1, &head_VAO);
+    glGenBuffers(1, &head_VBO);
+    glBindVertexArray(head_VAO);
+    // Copy our vertices array in a buffer for OpenGL to use
+    glBindBuffer(GL_ARRAY_BUFFER, head_VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(human.get_head().vertices), human.get_head().vertices, GL_STATIC_DRAW);
+    // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
 
-    // Set the texture wrapping/filtering options (on currently bound texture)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    unsigned int right_upper_arm_VBO, right_upper_arm_VAO;
+    glGenVertexArrays(1, &right_upper_arm_VAO);
+    glGenBuffers(1, &right_upper_arm_VBO);
+    glBindVertexArray(right_upper_arm_VAO);
+    // Copy our vertices array in a buffer for OpenGL to use
+    glBindBuffer(GL_ARRAY_BUFFER, right_upper_arm_VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(human.get_right_upper_arm().vertices), human.get_right_upper_arm().vertices, GL_STATIC_DRAW);
+    // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
 
-    // Load and generate the texture
-    int width, height, nrChannels;
-    stbi_set_flip_vertically_on_load(true);
-    unsigned char *data = stbi_load("../resources/textures/container.jpg", &width, &height, &nrChannels, 0);
-    if (data) {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    } else {
-        std::cout << "Failed to load texture" << std::endl;
-    }
-    stbi_image_free(data);
+    unsigned int left_upper_arm_VBO, left_upper_arm_VAO;
+    glGenVertexArrays(1, &left_upper_arm_VAO);
+    glGenBuffers(1, &left_upper_arm_VBO);
+    glBindVertexArray(left_upper_arm_VAO);
+    // Copy our vertices array in a buffer for OpenGL to use
+    glBindBuffer(GL_ARRAY_BUFFER, left_upper_arm_VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(human.get_left_upper_arm().vertices), human.get_left_upper_arm().vertices, GL_STATIC_DRAW);
+    // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
 
-    // texture2
-    glGenTextures(1, &texture2);
-    glBindTexture(GL_TEXTURE_2D, texture2);
+    unsigned int right_fore_arm_VBO, right_fore_arm_VAO;
+    glGenVertexArrays(1, &right_fore_arm_VAO);
+    glGenBuffers(1, &right_fore_arm_VBO);
+    glBindVertexArray(right_fore_arm_VAO);
+    // Copy our vertices array in a buffer for OpenGL to use
+    glBindBuffer(GL_ARRAY_BUFFER, right_fore_arm_VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(human.get_right_fore_arm().vertices), human.get_right_fore_arm().vertices, GL_STATIC_DRAW);
+    // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
 
-    // Set the texture wrapping/filtering options (on currently bound texture)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    unsigned int left_fore_arm_VBO, left_fore_arm_VAO;
+    glGenVertexArrays(1, &left_fore_arm_VAO);
+    glGenBuffers(1, &left_fore_arm_VBO);
+    glBindVertexArray(left_fore_arm_VAO);
+    // Copy our vertices array in a buffer for OpenGL to use
+    glBindBuffer(GL_ARRAY_BUFFER, left_fore_arm_VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(human.get_left_fore_arm().vertices), human.get_left_fore_arm().vertices, GL_STATIC_DRAW);
+    // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
 
-    // Load and generate the texture
-    data = stbi_load("../resources/textures/awesomeface.png", &width, &height, &nrChannels, 0);
-    if (data) {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    } else {
-        std::cout << "Failed to load texture" << std::endl;
-    }
-    stbi_image_free(data);
+    unsigned int right_upper_leg_VBO, right_upper_leg_VAO;
+    glGenVertexArrays(1, &right_upper_leg_VAO);
+    glGenBuffers(1, &right_upper_leg_VBO);
+    glBindVertexArray(right_upper_leg_VAO);
+    // Copy our vertices array in a buffer for OpenGL to use
+    glBindBuffer(GL_ARRAY_BUFFER, right_upper_leg_VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(human.get_right_upper_leg().vertices), human.get_right_upper_leg().vertices, GL_STATIC_DRAW);
+    // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    unsigned int left_upper_leg_VBO, left_upper_leg_VAO;
+    glGenVertexArrays(1, &left_upper_leg_VAO);
+    glGenBuffers(1, &left_upper_leg_VBO);
+    glBindVertexArray(left_upper_leg_VAO);
+    // Copy our vertices array in a buffer for OpenGL to use
+    glBindBuffer(GL_ARRAY_BUFFER, left_upper_leg_VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(human.get_left_upper_leg().vertices), human.get_left_upper_leg().vertices, GL_STATIC_DRAW);
+    // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    unsigned int right_lower_leg_VBO, right_lower_leg_VAO;
+    glGenVertexArrays(1, &right_lower_leg_VAO);
+    glGenBuffers(1, &right_lower_leg_VBO);
+    glBindVertexArray(right_lower_leg_VAO);
+    // Copy our vertices array in a buffer for OpenGL to use
+    glBindBuffer(GL_ARRAY_BUFFER, right_lower_leg_VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(human.get_right_lower_leg().vertices), human.get_right_lower_leg().vertices, GL_STATIC_DRAW);
+    // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    unsigned int left_lower_leg_VBO, left_lower_leg_VAO;
+    glGenVertexArrays(1, &left_lower_leg_VAO);
+    glGenBuffers(1, &left_lower_leg_VBO);
+    glBindVertexArray(left_lower_leg_VAO);
+    // Copy our vertices array in a buffer for OpenGL to use
+    glBindBuffer(GL_ARRAY_BUFFER, left_lower_leg_VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(human.get_left_lower_leg().vertices), human.get_left_lower_leg().vertices, GL_STATIC_DRAW);
+    // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
 
     ourShader.use();
-    ourShader.setInt("texture1", 0);
-    ourShader.setInt("texture2", 1);
 
     glEnable(GL_DEPTH_TEST);
 
@@ -178,17 +171,12 @@ int main() {
 
         // Render
         // Clear the colorbuffer
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture1);
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, texture2);
 
         // Camera
         glm::mat4 view;
-        view = glm::lookAt(glm::vec3(8.0f, 0.0f, 8.0f),
+        view = glm::lookAt(glm::vec3(10.0f, 0.0f, 10.0f),
                             glm::vec3(0.0f, 0.0f, 0.0f),
                             glm::vec3(0.0f, 1.0f, 0.0f));
 
@@ -200,16 +188,80 @@ int main() {
         unsigned int modelLoc = glGetUniformLocation(ourShader.ID, "model");
         unsigned int viewLoc = glGetUniformLocation(ourShader.ID, "view");
         unsigned int projLoc = glGetUniformLocation(ourShader.ID, "projection");
-        // Draw Head
-        model = glm::translate(model, headPosition);
+
+        ourShader.use();
+        int vertexColorLocation = glGetUniformLocation(ourShader.ID, "color");
+
+        // Draw torso
+        model = human.get_torso_model_matrix();
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-        glDrawArrays(GL_TRIANGLES, 0, 36);
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
         glUniformMatrix4fv(projLoc, 1, GL_FALSE, &projection[0][0]);
+        glUniform4f(vertexColorLocation, 0.13f, 0.54f, 0.13f, 1.0f);
+        glBindVertexArray(torso_VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
 
-        // Render the triangle
-        ourShader.use();
-        glBindVertexArray(VAO);
+        // Draw head
+        model = human.get_head_model_matrix();
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform4f(vertexColorLocation, 1.0f, 0.76f, 0.64f, 1.0f);
+        glBindVertexArray(head_VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        // Draw right upper arm
+        model = human.get_right_upper_arm_model_matrix();
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform4f(vertexColorLocation, 1.0f, 0.76f, 0.64f, 1.0f);
+        glBindVertexArray(right_upper_arm_VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        // Draw left upper arm
+        model = human.get_left_upper_arm_model_matrix();
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform4f(vertexColorLocation, 1.0f, 0.76f, 0.64f, 1.0f);
+        glBindVertexArray(left_upper_arm_VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        // Draw right fore arm
+        model = human.get_right_fore_arm_model_matrix();
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform4f(vertexColorLocation, 1.0f, 0.76f, 0.64f, 1.0f);
+        glBindVertexArray(right_fore_arm_VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        // Draw left fore arm
+        model = human.get_left_fore_arm_model_matrix();
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform4f(vertexColorLocation, 1.0f, 0.76f, 0.64f, 1.0f);
+        glBindVertexArray(left_fore_arm_VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        // Draw right upper leg
+        model = human.get_right_upper_leg_model_matrix();
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform4f(vertexColorLocation, 0.03f, 0.37f, 0.65f, 1.0f);
+        glBindVertexArray(right_upper_leg_VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        // Draw left upper leg
+        model = human.get_left_upper_leg_model_matrix();
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform4f(vertexColorLocation, 0.03f, 0.37f, 0.65f, 1.0f);
+        glBindVertexArray(left_upper_leg_VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        // Draw right lower leg
+        model = human.get_right_lower_leg_model_matrix();
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform4f(vertexColorLocation, 0.03f, 0.37f, 0.65f, 1.0f);
+        glBindVertexArray(right_lower_leg_VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        // Draw left lower leg
+        model = human.get_left_lower_leg_model_matrix();
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform4f(vertexColorLocation, 0.03f, 0.37f, 0.65f, 1.0f);
+        glBindVertexArray(left_lower_leg_VAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         // Swap buffers and poll IO events
@@ -218,9 +270,26 @@ int main() {
     }
 
     // Optional: de-allocate all resources once they've outlived their purpose
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
+    glDeleteVertexArrays(1, &torso_VAO);
+    glDeleteVertexArrays(1, &head_VAO);
+    glDeleteVertexArrays(1, &right_upper_arm_VAO);
+    glDeleteVertexArrays(1, &left_upper_arm_VAO);
+    glDeleteVertexArrays(1, &right_fore_arm_VAO);
+    glDeleteVertexArrays(1, &left_fore_arm_VAO);
+    glDeleteVertexArrays(1, &right_upper_leg_VAO);
+    glDeleteVertexArrays(1, &left_upper_leg_VAO);
+    glDeleteVertexArrays(1, &right_lower_leg_VAO);
+    glDeleteVertexArrays(1, &left_lower_leg_VAO);
+    glDeleteBuffers(1, &torso_VBO);
+    glDeleteBuffers(1, &head_VBO);
+    glDeleteBuffers(1, &right_upper_arm_VBO);
+    glDeleteBuffers(1, &left_upper_arm_VBO);
+    glDeleteBuffers(1, &right_fore_arm_VBO);
+    glDeleteBuffers(1, &left_fore_arm_VBO);
+    glDeleteBuffers(1, &right_upper_leg_VBO);
+    glDeleteBuffers(1, &left_upper_leg_VBO);
+    glDeleteBuffers(1, &right_lower_leg_VBO);
+    glDeleteBuffers(1, &left_lower_leg_VBO);
 
     glfwTerminate();
 
