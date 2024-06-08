@@ -1,5 +1,5 @@
-#ifndef TORSO_HPP
-#define TORSO_HPP
+#ifndef HEAD_HPP
+#define HEAD_HPP
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>
@@ -8,14 +8,14 @@
 #include <iostream>
 
 
-class Torso {
+class Head {
     public:
-        Torso();
-        ~Torso();
+        Head();
+        ~Head();
         glm::mat4 get_model_matrix();
-        float width = 2.4f;
-        float height = 3.0f;
-        float depth = 0.6f;
+        float width = 1.0f;
+        float height = 1.0f;
+        float depth = 1.0f;
         float vertices[180] = {
             // Front
             -width / 2, -height / 2,  depth / 2,
@@ -62,7 +62,7 @@ class Torso {
         };
 
     private:
-        glm::vec3 position = glm::vec3(0.0f, 0.5f, 0.0f);
+        glm::vec3 position = glm::vec3(0.0f, 2.5f, 0.0f);
 
 };
 

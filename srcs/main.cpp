@@ -95,26 +95,24 @@ int main() {
 
     Human human;
 
-    unsigned int indices[] = {
-        0, 1, 3, // first triangle
-        1, 2, 3  // second triangle
-    };
-    glm::vec3 headPosition = glm::vec3( 0.0f, 2.0f, 0.0f);
-    // Setup VAO
-    unsigned int VBO, VAO, EBO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
-    // Bind vertex array object
-    glBindVertexArray(VAO);
-
+    unsigned int torso_VBO, torso_VAO;
+    glGenVertexArrays(1, &torso_VAO);
+    glGenBuffers(1, &torso_VBO);
+    glBindVertexArray(torso_VAO);
     // Copy our vertices array in a buffer for OpenGL to use
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, torso_VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(human.get_torso().vertices), human.get_torso().vertices, GL_STATIC_DRAW);
+    // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
+    unsigned int head_VBO, head_VAO;
+    glGenVertexArrays(1, &head_VAO);
+    glGenBuffers(1, &head_VBO);
+    glBindVertexArray(head_VAO);
+    // Copy our vertices array in a buffer for OpenGL to use
+    glBindBuffer(GL_ARRAY_BUFFER, head_VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(human.get_head().vertices), human.get_head().vertices, GL_STATIC_DRAW);
     // Position attribute
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
@@ -130,12 +128,12 @@ int main() {
 
         // Render
         // Clear the colorbuffer
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // Camera
         glm::mat4 view;
-        view = glm::lookAt(glm::vec3(8.0f, 0.0f, 8.0f),
+        view = glm::lookAt(glm::vec3(10.0f, 0.0f, 10.0f),
                             glm::vec3(0.0f, 0.0f, 0.0f),
                             glm::vec3(0.0f, 1.0f, 0.0f));
 
@@ -147,20 +145,24 @@ int main() {
         unsigned int modelLoc = glGetUniformLocation(ourShader.ID, "model");
         unsigned int viewLoc = glGetUniformLocation(ourShader.ID, "view");
         unsigned int projLoc = glGetUniformLocation(ourShader.ID, "projection");
-        // Draw Head
-        model = glm::translate(model, headPosition);
+
+        ourShader.use();
+        int vertexColorLocation = glGetUniformLocation(ourShader.ID, "color");
+
+        // Draw torso
+        model = human.get_torso_model_matrix();
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
         glUniformMatrix4fv(projLoc, 1, GL_FALSE, &projection[0][0]);
-
-        // Render the triangle
-        ourShader.use();
-        glBindVertexArray(VAO);
+        glUniform4f(vertexColorLocation, 0.13f, 0.54f, 0.13f, 1.0f);
+        glBindVertexArray(torso_VAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
-        // TODO: Draw rectangular prism as torso
-        model = human.get_torso_model_matrix();
+        // Draw head
+        model = human.get_head_model_matrix();
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform4f(vertexColorLocation, 1.0f, 0.76f, 0.64f, 1.0f);
+        glBindVertexArray(head_VAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         // Swap buffers and poll IO events
@@ -169,9 +171,10 @@ int main() {
     }
 
     // Optional: de-allocate all resources once they've outlived their purpose
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
+    glDeleteVertexArrays(1, &torso_VAO);
+    glDeleteVertexArrays(1, &head_VAO);
+    glDeleteBuffers(1, &torso_VBO);
+    glDeleteBuffers(1, &head_VBO);
 
     glfwTerminate();
 
