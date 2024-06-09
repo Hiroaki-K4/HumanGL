@@ -13,9 +13,9 @@ class Head {
     public:
         Head();
         ~Head();
-        glm::mat4 get_model_matrix(
-            std::vector<glm::mat4> trans_mat_stack,
-            std::vector<glm::mat4> rot_mat_stack);
+        void store_translation_matrix(glm::mat4 trans_mat);
+        void store_rotation_matrix(glm::mat4 rot_mat);
+        glm::mat4 get_model_matrix();
         float width = 1.0f;
         float height = 1.0f;
         float depth = 1.0f;
@@ -66,7 +66,8 @@ class Head {
 
     private:
         glm::vec3 position = glm::vec3(0.0f, 2.5f, 0.0f);
-
+        std::vector<glm::mat4> trans_mat_stack;
+        std::vector<glm::mat4> rot_mat_stack;
 };
 
 #endif
