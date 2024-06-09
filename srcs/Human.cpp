@@ -74,11 +74,11 @@ glm::mat4 Human::get_head_model_matrix() {
 }
 
 glm::mat4 Human::get_right_upper_arm_model_matrix() {
-    return right_upper_arm.get_model_matrix(glm::vec3(-1.5f, 1.9f, 0.0f));
+    return right_upper_arm.get_model_matrix(glm::vec3(-1.2f - right_upper_arm.width, 1.9f, 0.0f));
 }
 
 glm::mat4 Human::get_left_upper_arm_model_matrix() {
-    return left_upper_arm.get_model_matrix(glm::vec3(1.5f, 1.9f, 0.0f));
+    return left_upper_arm.get_model_matrix(glm::vec3(1.2f, 1.9f, 0.0f));
 }
 
 glm::mat4 Human::get_right_fore_arm_model_matrix() {
@@ -90,17 +90,17 @@ glm::mat4 Human::get_left_fore_arm_model_matrix() {
 }
 
 glm::mat4 Human::get_right_upper_leg_model_matrix() {
-    return right_upper_leg.get_model_matrix();
+    return right_upper_leg.get_model_matrix(glm::vec3(-1.2f, -1.0f, 0.0f));
 }
 
 glm::mat4 Human::get_left_upper_leg_model_matrix() {
-    return left_upper_leg.get_model_matrix();
+    return left_upper_leg.get_model_matrix(glm::vec3(0.0f, -1.0f, 0.0f));
 }
 
 glm::mat4 Human::get_right_lower_leg_model_matrix() {
-    return right_lower_leg.get_model_matrix();
+    return right_lower_leg.get_model_matrix(right_upper_leg.current_bottom_connect_pos);
 }
 
 glm::mat4 Human::get_left_lower_leg_model_matrix() {
-    return left_lower_leg.get_model_matrix();
+    return left_lower_leg.get_model_matrix(left_upper_leg.current_bottom_connect_pos);
 }
