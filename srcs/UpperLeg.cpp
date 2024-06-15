@@ -1,16 +1,13 @@
 #include "UpperLeg.hpp"
 
 
-UpperLeg::UpperLeg() {
-    std::cout << "This is UpperLeg class" << std::endl;
-}
+UpperLeg::UpperLeg() {}
 
 UpperLeg::UpperLeg(glm::vec3 position) {
-    std::cout << "This is UpperLeg class" << std::endl;
     this->position = position;
 }
 
-UpperLeg::~UpperLeg() { std::cout << "Finish UpperLeg class" << std::endl; }
+UpperLeg::~UpperLeg() {}
 
 glm::mat4 UpperLeg::get_model_matrix(glm::vec3 torso_pos) {
     float timeValue = glfwGetTime();

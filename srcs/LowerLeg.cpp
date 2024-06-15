@@ -1,16 +1,13 @@
 #include "LowerLeg.hpp"
 
 
-LowerLeg::LowerLeg() {
-    std::cout << "This is LowerLeg class" << std::endl;
-}
+LowerLeg::LowerLeg() {}
 
 LowerLeg::LowerLeg(glm::vec3 position) {
-    std::cout << "This is LowerLeg class" << std::endl;
     this->position = position;
 }
 
-LowerLeg::~LowerLeg() { std::cout << "Finish LowerLeg class" << std::endl; }
+LowerLeg::~LowerLeg() {}
 
 glm::mat4 LowerLeg::get_model_matrix(glm::vec3 upper_leg_pos) {
     float timeValue = glfwGetTime();

@@ -1,16 +1,13 @@
 #include "ForeArm.hpp"
 
 
-ForeArm::ForeArm() {
-    std::cout << "This is ForeArm class" << std::endl;
-}
+ForeArm::ForeArm() {}
 
 ForeArm::ForeArm(glm::vec3 position) {
-    std::cout << "This is ForeArm class" << std::endl;
     this->position = position;
 }
 
-ForeArm::~ForeArm() { std::cout << "Finish ForeArm class" << std::endl; }
+ForeArm::~ForeArm() {}
 
 void ForeArm::store_translation_matrix(glm::mat4 trans_mat) {
     trans_mat_stack.push_back(trans_mat);

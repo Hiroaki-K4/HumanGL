@@ -1,7 +1,6 @@
 #include "Human.hpp"
 
 Human::Human() {
-    std::cout << "This is Human class" << std::endl;
     UpperArm right_upper_arm(glm::vec3(-1.5f, 1.0f, 0.0f));
     this->right_upper_arm = right_upper_arm;
     UpperArm left_upper_arm(glm::vec3(1.5f, 1.0f, 0.0f));
@@ -23,7 +22,7 @@ Human::Human() {
     this->left_lower_leg = left_lower_leg;
 }
 
-Human::~Human() { std::cout << "Finish Human class" << std::endl; }
+Human::~Human() {}
 
 Torso Human::get_torso() {
     return torso;
@@ -70,15 +69,27 @@ glm::mat4 Human::get_torso_model_matrix() {
 }
 
 glm::mat4 Human::get_head_model_matrix() {
-    return head.get_model_matrix();
+    return head.get_model_matrix(
+        glm::vec3(
+            get_torso().get_current_position()[0],
+            get_torso().get_current_position()[1] + get_torso().height / 2,
+            get_torso().get_current_position()[2]));
 }
 
 glm::mat4 Human::get_right_upper_arm_model_matrix() {
-    return right_upper_arm.get_model_matrix(glm::vec3(-1.2f - right_upper_arm.width, 1.9f, 0.0f));
+    return right_upper_arm.get_model_matrix(
+        glm::vec3(
+            get_torso().get_current_position()[0] - get_torso().width / 2 - right_upper_arm.width,
+            get_torso().get_current_position()[1] + get_torso().height / 2 - 0.1,
+            get_torso().get_current_position()[2]));
 }
 
 glm::mat4 Human::get_left_upper_arm_model_matrix() {
-    return left_upper_arm.get_model_matrix(glm::vec3(1.2f, 1.9f, 0.0f));
+    return left_upper_arm.get_model_matrix(
+        glm::vec3(
+            get_torso().get_current_position()[0] + get_torso().width / 2,
+            get_torso().get_current_position()[1] + get_torso().height / 2 - 0.1,
+            get_torso().get_current_position()[2]));
 }
 
 glm::mat4 Human::get_right_fore_arm_model_matrix() {
@@ -90,11 +101,19 @@ glm::mat4 Human::get_left_fore_arm_model_matrix() {
 }
 
 glm::mat4 Human::get_right_upper_leg_model_matrix() {
-    return right_upper_leg.get_model_matrix(glm::vec3(-1.2f, -1.0f, 0.0f));
+    return right_upper_leg.get_model_matrix(
+        glm::vec3(
+            get_torso().get_current_position()[0] - get_torso().width / 2,
+            get_torso().get_current_position()[1] - get_torso().height / 2 + 0.1,
+            get_torso().get_current_position()[2]));
 }
 
 glm::mat4 Human::get_left_upper_leg_model_matrix() {
-    return left_upper_leg.get_model_matrix(glm::vec3(0.0f, -1.0f, 0.0f));
+    return left_upper_leg.get_model_matrix(
+        glm::vec3(
+            get_torso().get_current_position()[0],
+            get_torso().get_current_position()[1] - get_torso().height / 2 + 0.1,
+            get_torso().get_current_position()[2]));
 }
 
 glm::mat4 Human::get_right_lower_leg_model_matrix() {

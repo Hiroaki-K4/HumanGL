@@ -1,16 +1,13 @@
 #include "UpperArm.hpp"
 
 
-UpperArm::UpperArm() {
-    std::cout << "This is UpperArm class" << std::endl;
-}
+UpperArm::UpperArm() {}
 
 UpperArm::UpperArm(glm::vec3 position) {
-    std::cout << "This is UpperArm class" << std::endl;
     this->position = position;
 }
 
-UpperArm::~UpperArm() { std::cout << "Finish UpperArm class" << std::endl; }
+UpperArm::~UpperArm() {}
 
 void UpperArm::store_translation_matrix(glm::mat4 trans_mat) {
     trans_mat_stack.push_back(trans_mat);
