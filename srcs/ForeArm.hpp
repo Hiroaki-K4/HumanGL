@@ -16,8 +16,6 @@ class ForeArm {
         ForeArm(glm::vec3 position);
         ~ForeArm();
         glm::mat4 get_model_matrix(glm::vec3 upper_arm_pos);
-        void store_translation_matrix(glm::mat4 trans_mat);
-        void store_rotation_matrix(glm::mat4 rot_mat);
         float width = 0.3f;
         float height = 1.5f;
         float depth = 0.3f;
@@ -69,8 +67,6 @@ class ForeArm {
 
     private:
         glm::vec3 position = glm::vec3(-1.5f, -0.5f, 0.0f);
-        std::vector<glm::mat4> trans_mat_stack;
-        std::vector<glm::mat4> rot_mat_stack;
 };
 
 #endif

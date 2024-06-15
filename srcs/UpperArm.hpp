@@ -15,8 +15,6 @@ class UpperArm {
         UpperArm();
         UpperArm(glm::vec3 position);
         ~UpperArm();
-        void store_translation_matrix(glm::mat4 trans_mat);
-        void store_rotation_matrix(glm::mat4 rot_mat);
         glm::mat4 get_model_matrix(glm::vec3 torso_pos);
         float width = 0.3f;
         float height = 1.5f;
@@ -71,8 +69,6 @@ class UpperArm {
 
     private:
         glm::vec3 position = glm::vec3(-1.5f, 1.0f, 0.0f);
-        std::vector<glm::mat4> trans_mat_stack;
-        std::vector<glm::mat4> rot_mat_stack;
 };
 
 #endif
