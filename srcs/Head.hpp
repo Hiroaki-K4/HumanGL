@@ -6,13 +6,16 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
+#include <vector>
 
 
 class Head {
     public:
         Head();
         ~Head();
-        glm::mat4 get_model_matrix();
+        void store_translation_matrix(glm::mat4 trans_mat);
+        void store_rotation_matrix(glm::mat4 rot_mat);
+        glm::mat4 get_model_matrix(glm::vec3 torso_pos);
         float width = 1.0f;
         float height = 1.0f;
         float depth = 1.0f;
@@ -63,7 +66,9 @@ class Head {
 
     private:
         glm::vec3 position = glm::vec3(0.0f, 2.5f, 0.0f);
-
+        glm::vec3 connect_pos = glm::vec3(position[0], position[1] - height / 2, position[2]);
+        std::vector<glm::mat4> trans_mat_stack;
+        std::vector<glm::mat4> rot_mat_stack;
 };
 
 #endif

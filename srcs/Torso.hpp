@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <GLFW/glfw3.h>
 #include <iostream>
 
 
@@ -13,6 +14,7 @@ class Torso {
         Torso();
         ~Torso();
         glm::mat4 get_model_matrix();
+        glm::vec3 get_current_position();
         float width = 2.4f;
         float height = 3.0f;
         float depth = 0.6f;
@@ -63,6 +65,7 @@ class Torso {
 
     private:
         glm::vec3 position = glm::vec3(0.0f, 0.5f, 0.0f);
+        glm::vec3 curr_position = position;
 
 };
 
