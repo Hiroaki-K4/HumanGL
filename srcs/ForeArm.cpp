@@ -9,14 +9,6 @@ ForeArm::ForeArm(glm::vec3 position) {
 
 ForeArm::~ForeArm() {}
 
-void ForeArm::store_translation_matrix(glm::mat4 trans_mat) {
-    trans_mat_stack.push_back(trans_mat);
-}
-
-void ForeArm::store_rotation_matrix(glm::mat4 rot_mat) {
-    rot_mat_stack.push_back(rot_mat);
-}
-
 glm::mat4 ForeArm::get_model_matrix(glm::vec3 upper_arm_pos) {
     float timeValue = glfwGetTime();
     float sign;
